@@ -1,0 +1,284 @@
+[
+  {
+    "id": "about-001",
+    "category": "About",
+    "title": "Personal Introduction",
+    "tags": ["personal", "bio", "identity", "introduction"],
+    "rank": 1,
+    "summary": "I'm Mohamed, a software engineer who loves building scalable applications using Spring Boot and Angular. I focus on clean architecture, performance, and real-world usability.",
+    "content": "I'm Mohamed, a software engineer who genuinely loves coding and building real-world projects. I'm always looking for opportunities to work on big, challenging projects where I can learn, grow, and actually make an impact. I care about the little details in my code—sometimes that even means initializing age as a short instead of an int just to optimize performance. Writing efficient, clean, and maintainable code is something I take seriously.\nI have experience with multiple programming languages, including C++, Java, and Python, and I've built several projects using Spring Boot and Angular. I'm comfortable working with databases like MongoDB, PostgreSQL, SQL, Cassandra, Redis, and even newer tools like ChromaDB. I've also explored some machine learning concepts like vector embeddings and RAG, using them to make applications smarter and more dynamic.\nOn the DevOps side, I know my way around CI/CD tools like Jenkins, GitHub Actions, and SonarQube, and I'm familiar with testing frameworks like JUnit and Mockito. I've also worked with Docker, Kubernetes, Kafka, and cloud platforms like Azure, which makes me confident in deploying and managing applications end-to-end.\nI'm the kind of person who loves figuring things out, learning new technologies, and making code better wherever I can. I focus on performance, scalability, and real-world usability, and I'm always looking for ways to improve both myself and the projects I work on.\nIn short, I'm a hands-on, performance-focused engineer who's excited about building meaningful software and being part of a team that tackles real-life challenges.",
+    "technologies": ["Java", "Spring Boot", "Angular", "MongoDB", "Docker", "Kafka", "ChromaDB"],
+    "metadata": {
+      "type": "personal",
+      "language": "en",
+      "priority": "high"
+    }
+  },
+
+  {
+    "id": "exp-001",
+    "category": "Experience",
+    "title": "Technical Support Specialist – The Hive",
+    "company": "The Hive",
+    "position": "L2 Technical Support Specialist",
+    "tags": ["technical support", "L2 support", "current job", "debugging", "production", "incident management"],
+    "rank": 1,
+    "duration": "2024 - Present",
+    "summary": "I work as a Level 2 Technical Support Specialist at The Hive, handling incident investigations and collaborating with developers to resolve system-level issues efficiently.",
+    "content": "As an L2 Technical Support Specialist at The Hive, I manage and resolve user-reported tickets and incidents. I investigate and reproduce issues using Postman, Elasticsearch (Kibana), Kafka, and JIRA, performing root cause analysis and coordinating with development and infrastructure teams to escalate and resolve problems efficiently. I handle production incidents involving API validation, Kafka event tracing, and log debugging. I've reduced incident resolution time by streamlining ticket workflows and created an internal troubleshooting knowledge base for faster team response.",
+    "responsibilities": [
+      "Managing and resolving L2 technical support tickets",
+      "Investigating production incidents using Postman, Kibana, and Kafka",
+      "Performing root cause analysis on system issues",
+      "Coordinating with development and infrastructure teams",
+      "Creating internal documentation and knowledge base"
+    ],
+    "achievements": [
+      "Reduced incident resolution time by streamlining ticket workflows",
+      "Created an internal troubleshooting knowledge base for faster team response",
+      "Improved debugging process through automation scripts"
+    ],
+    "technologies": ["Postman", "Elasticsearch", "Kibana", "Kafka", "JIRA"],
+    "metadata": {
+      "year": "2024-Present",
+      "start_year": "2024",
+      "type": "professional",
+      "is_current": true,
+      "employment_type": "full-time"
+    }
+  },
+
+  {
+    "id": "exp-004",
+    "category": "Experience",
+    "title": "IT Developer – Mondiale des Etudes & Réalisations Industrielles",
+    "company": "Mondiale des Etudes & Réalisations Industrielles",
+    "position": "IT Developer",
+    "tags": ["python", "alfresco", "power automate", "power apps", "workflow automation", "document management"],
+    "rank": 2,
+    "duration": "2022 - 2024",
+    "summary": "Started as IT Support, then evolved into developing document management and workflow automation solutions using Power Platform and Python.",
+    "content": "Started as IT Support at Mondiale des Etudes & Réalisations Industrielles, then evolved into developing document management and workflow automation solutions. Built custom workflows using Power Automate and Power Apps to streamline business processes. Developed Python scripts for Alfresco document management system integration. Created automated reporting systems and improved document tracking efficiency across departments.",
+    "responsibilities": [
+      "Developing workflow automation using Power Automate and Power Apps",
+      "Building Python scripts for Alfresco integration",
+      "Creating automated reporting systems",
+      "Providing IT support and troubleshooting"
+    ],
+    "technologies": ["Python", "Power Automate", "Power Apps", "Alfresco"],
+    "metadata": {
+      "year": "2022-2024",
+      "start_year": "2022",
+      "end_year": "2024",
+      "type": "professional",
+      "employment_type": "full-time"
+    }
+  },
+
+  {
+    "id": "exp-003",
+    "category": "Experience",
+    "title": "Full-Stack Developer – New Technologies (PFE)",
+    "company": "New Technologies",
+    "position": "Full-Stack Developer",
+    "tags": ["spring boot", "angular", "jwt", "security", "pfe", "final year project", "e-commerce"],
+    "rank": 3,
+    "duration": "2021",
+    "summary": "Developed a full C2C e-commerce marketplace using Angular and Spring Boot as part of my final-year project.",
+    "content": "Developed a full C2C marketplace web application with Angular frontend and Spring Boot backend as my final-year project (PFE). Implemented user subscription, messaging, buying/selling, and boutique account features. Ensured security using Spring Security and JWT for API protection. Integrated email verification, multi-role access control, and personalized product recommendations on the homepage. Built a complete e-commerce platform supporting customer-to-customer transactions.",
+    "technologies": ["Spring Boot", "Angular", "JWT", "MySQL", "Spring Security"],
+    "metadata": {
+      "year": "2021",
+      "start_year": "2021",
+      "end_year": "2021",
+      "type": "academic",
+      "project_type": "final_year"
+    }
+  },
+
+  {
+    "id": "exp-002",
+    "category": "Experience",
+    "title": "Intern – Bank of Tunis",
+    "company": "Bank of Tunis",
+    "position": "Banking Intern",
+    "tags": ["internship", "banking", "excel", "communication", "first job"],
+    "rank": 4,
+    "duration": "2019",
+    "summary": "My first professional experience where I learned time management and teamwork by assisting daily operations and client interactions at Bank of Tunis.",
+    "content": "My first professional experience as an intern at Bank of Tunis. I assisted with daily agency operations, managed client interactions, prepared reports, and worked with Excel for data entry and basic analysis. I improved my time management, organization, and communication skills in a professional environment. Successfully managed client requests and documentation for over 50 accounts. This experience taught me professional communication and understanding of structured workflows in the banking sector.",
+    "achievements": ["Successfully managed client requests and documentation for over 50 accounts"],
+    "technologies": ["Excel", "Office Tools"],
+    "metadata": {
+      "year": "2019",
+      "start_year": "2019",
+      "end_year": "2019",
+      "type": "internship",
+      "employment_type": "internship"
+    }
+  },
+
+  {
+    "id": "proj-003",
+    "category": "Project",
+    "title": "CareForElders – AI-Powered Elderly Care Platform",
+    "tags": ["angular", "spring boot", "spring cloud", "microservices", "chromadb", "AI", "healthcare", "RAG"],
+    "rank": 1,
+    "summary": "Built an AI-assisted elderly care management platform using Spring Cloud microservices and ChromaDB to provide smart, contextual responses from medical case data.",
+    "content": "Built an AI-assisted elderly care management platform using Spring Cloud microservices architecture and ChromaDB for intelligent data retrieval. The system provides smart, contextual responses from medical case data using RAG (Retrieval Augmented Generation) technology. Implemented microservices for patient management, caregiver scheduling, medication tracking, and AI-powered health monitoring. Used ChromaDB for semantic search of medical records and Angular for the frontend interface.",
+    "technologies": ["Angular", "Spring Boot", "Spring Cloud", "ChromaDB", "Docker", "Microservices", "RAG"],
+    "metadata": {
+      "type": "personal_project",
+      "status": "completed",
+      "year": "2024"
+    }
+  },
+
+  {
+    "id": "proj-002",
+    "category": "Project",
+    "title": "FullCare_App – Blockchain Healthcare Document Management",
+    "tags": ["blockchain", "hedera", "nft", "angular", "nodejs", "postgresql", "security", "healthcare"],
+    "rank": 2,
+    "summary": "Developed a decentralized healthcare system using Hedera Hashgraph where each medical record is securely tied to an NFT, allowing doctors to access records only with token authorization.",
+    "content": "Developed a decentralized healthcare document management system using Hedera Hashgraph blockchain technology. Each medical record is securely tied to an NFT (Non-Fungible Token), allowing doctors to access records only with proper token authorization. Built with Angular frontend, Node.js backend, and PostgreSQL database. Implemented secure authentication, role-based access control, and blockchain-based medical record verification. This ensures patient data privacy while enabling authorized healthcare providers to access critical medical information.",
+    "technologies": ["Angular", "Node.js", "PostgreSQL", "Hedera Hashgraph SDK", "Blockchain", "NFT"],
+    "metadata": {
+      "type": "academic_project",
+      "status": "completed",
+      "year": "2023"
+    }
+  },
+
+  {
+    "id": "proj-004",
+    "category": "Project",
+    "title": "MultiPurpose_Ecommerce – Customizable B2B/B2C Platform",
+    "tags": ["angular", "spring boot", "mongodb", "jwt", "e-commerce", "multi-tenant"],
+    "rank": 3,
+    "summary": "Developed a modular e-commerce platform supporting both B2B and B2C operations with dynamic storefronts, admin dashboards, and secure JWT authentication.",
+    "content": "Developed a modular, multi-purpose e-commerce platform supporting both B2B (Business-to-Business) and B2C (Business-to-Consumer) operations. Features include dynamic storefronts, comprehensive admin dashboards, inventory management, order processing, and secure JWT authentication. Built with Angular for the frontend and Spring Boot for the backend, using MongoDB for flexible data storage. The platform supports multiple vendors, customizable product catalogs, and role-based access control for different user types.",
+    "technologies": ["Angular", "Spring Boot", "MongoDB", "JWT", "REST API"],
+    "metadata": {
+      "type": "personal_project",
+      "status": "completed",
+      "year": "2023"
+    }
+  },
+
+  {
+    "id": "edu-001",
+    "category": "Education",
+    "title": "Software Engineering – Private Higher School of Engineering and Technology",
+    "institution": "Private Higher School of Engineering and Technology (ESPRIT)",
+    "degree": "Engineering Degree in Software Engineering",
+    "tags": ["software engineering", "night courses", "current education", "engineering"],
+    "rank": 1,
+    "duration": "2022 - Present",
+    "summary": "Studying Software Engineering at the Private Higher School of Engineering and Technology (Tunis) through night courses while working full-time.",
+    "content": "Currently pursuing an Engineering Degree in Software Engineering at the Private Higher School of Engineering and Technology (ESPRIT) in Tunis through night courses while working full-time. I chose the night program to gain professional experience and fund my education simultaneously. This experience has shaped my resilience, discipline, and ability to apply theoretical knowledge directly to practice in real-world scenarios. The curriculum covers advanced software architecture, distributed systems, AI, and modern development practices.",
+    "metadata": {
+      "type": "education",
+      "year": "2022-Present",
+      "start_year": "2022",
+      "language": "en",
+      "status": "ongoing",
+      "level": "engineering"
+    }
+  },
+
+  {
+    "id": "edu-002",
+    "category": "Education",
+    "title": "Information Systems Development – Higher Institute of Technological Studies of Rades",
+    "institution": "Higher Institute of Technological Studies of Rades (ISET Rades)",
+    "degree": "Technician Degree in Information Systems Development",
+    "tags": ["information systems", "development", "iset", "graduated"],
+    "rank": 2,
+    "duration": "2018 - 2021",
+    "summary": "Graduated in Information Systems Development at ISET Rades, focusing on software architecture and teamwork.",
+    "content": "Graduated with a Technician Degree in Information Systems Development from the Higher Institute of Technological Studies of Rades (ISET Rades). The program focused on software architecture, database design, web development, and team-based project work. Completed my final year project (PFE) developing a full-stack C2C e-commerce marketplace using Spring Boot and Angular. This education provided a strong foundation in programming, system analysis, and software development methodologies.",
+    "metadata": {
+      "type": "education",
+      "year": "2018-2021",
+      "start_year": "2018",
+      "end_year": "2021",
+      "language": "en",
+      "status": "completed",
+      "level": "technician"
+    }
+  },
+
+  {
+    "id": "personal-001",
+    "category": "Personal",
+    "title": "Personal Information & Languages",
+    "tags": ["personal info", "languages", "age", "location", "multilingual"],
+    "rank": 1,
+    "summary": "I'm 28 years old, based in Tunis, Tunisia. I speak English fluently, French at B2 level, and Arabic natively.",
+    "content": "I'm Mohamed, 28 years old, based in Tunis, Tunisia. I speak three languages: English (fluent), French (B2 - Upper-Intermediate level), and Arabic (native speaker). My multilingual abilities allow me to work effectively in international and multicultural environments. I'm comfortable conducting technical discussions and writing documentation in all three languages.",
+    "languages": [
+      { "language": "English", "level": "Fluent", "proficiency": "C1" },
+      { "language": "French", "level": "Upper-Intermediate", "proficiency": "B2" },
+      { "language": "Arabic", "level": "Native", "proficiency": "Native" }
+    ],
+    "metadata": {
+      "type": "personal",
+      "language": "en",
+      "age": 28,
+      "location": "Tunis, Tunisia"
+    }
+  },
+
+  {
+    "id": "skills-001",
+    "category": "Skills",
+    "title": "Technical Skills Overview",
+    "tags": ["technical skills", "programming", "frameworks", "tools", "full-stack"],
+    "rank": 1,
+    "summary": "Comprehensive full-stack skill set spanning web development, backend systems, DevOps, databases, and AI technologies.",
+    "content": "PROGRAMMING LANGUAGES: Java, Python, C++, JavaScript/TypeScript. FRONTEND: Angular, HTML5, CSS3, Tailwind CSS, Bootstrap, React (basic). BACKEND: Spring Boot, Spring Cloud, Node.js, Express.js, REST APIs, Microservices. DATABASES: MongoDB, PostgreSQL, MySQL, Cassandra, Redis, ChromaDB. DEVOPS & TOOLS: Docker, Kubernetes, Jenkins, GitHub Actions, SonarQube, Kafka, Git. TESTING: JUnit, Mockito, Integration Testing. CLOUD: Azure, Azure OpenAI. AI/ML: Vector Embeddings, RAG (Retrieval Augmented Generation), ChromaDB, Semantic Search. OTHER: Elasticsearch, Kibana, JIRA, Postman, Power Automate, Power Apps, Alfresco.",
+    "skill_categories": {
+      "languages": ["Java", "Python", "C++", "JavaScript", "TypeScript"],
+      "frontend": ["Angular", "React", "HTML5", "CSS3"],
+      "backend": ["Spring Boot", "Spring Cloud", "Node.js", "Express.js"],
+      "databases": ["MongoDB", "PostgreSQL", "MySQL", "Redis", "Cassandra", "ChromaDB"],
+      "devops": ["Docker", "Kubernetes", "Jenkins", "GitHub Actions"],
+      "ai_ml": ["RAG", "Vector Embeddings", "ChromaDB", "Azure OpenAI"],
+      "tools": ["Git", "JIRA", "Postman", "Kafka", "Elasticsearch"]
+    },
+    "metadata": {
+      "type": "technical",
+      "language": "en",
+      "last_updated": "2024"
+    }
+  },
+
+  {
+    "id": "vision-001",
+    "category": "Vision",
+    "title": "Engineering Philosophy & Career Goals",
+    "tags": ["philosophy", "mindset", "goals", "values", "motivation"],
+    "rank": 1,
+    "summary": "I believe technology should simplify lives. My goal is to build scalable, human-centric systems that make a real impact.",
+    "content": "I believe technology should exist to simplify people's lives, not complicate them. My goal as an engineer is to build scalable, human-centric systems that make a real, measurable impact on users and businesses. I'm passionate about clean code, performance optimization, and creating solutions that actually solve problems rather than creating new ones. I value continuous learning, collaboration, and working on challenging projects where I can grow while contributing meaningfully. I want to be part of teams that tackle real-life challenges and build software that matters.",
+    "metadata": {
+      "type": "mindset",
+      "language": "en"
+    }
+  },
+
+  {
+    "id": "behavior-001",
+    "category": "Behavioral",
+    "title": "Problem Solving & Team Collaboration",
+    "tags": ["soft skills", "teamwork", "problem solving", "communication", "debugging"],
+    "rank": 1,
+    "summary": "I handle challenges calmly, focusing on root-cause analysis, clear communication, and effective teamwork.",
+    "content": "I approach problems methodically, focusing on root-cause analysis rather than quick fixes. When facing challenges, I remain calm and break down complex issues into manageable parts. I believe clear communication is as important as technical skills - I document my work thoroughly and explain technical concepts in ways that non-technical stakeholders can understand. I thrive in collaborative environments where knowledge sharing is encouraged. I'm comfortable asking for help when needed and equally comfortable helping others. I've learned that the best solutions often come from team discussions rather than working in isolation.",
+    "metadata": {
+      "type": "behavioral",
+      "language": "en"
+    }
+  }
+]

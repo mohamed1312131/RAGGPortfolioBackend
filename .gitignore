@@ -1,0 +1,87 @@
+# ======================================
+# 🔒 Environment & Secrets
+# ======================================
+.env
+*.env
+*.key
+*.pem
+*.crt
+*.csr
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.secret
+application-local.properties
+
+# ======================================
+# 🧩 Build Artifacts
+# ======================================
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+dist/
+out/
+bin/
+
+# ======================================
+# 🧠 IDE & Editor Settings
+# ======================================
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# --- Spring Tool Suite (STS) ---
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# --- NetBeans ---
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# --- Visual Studio Code ---
+.vscode/
+
+# --- Eclipse ---
+.metadata
+.recommenders/
+.loadpath
+
+# ======================================
+# 🧰 System Files
+# ======================================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ======================================
+# 🧾 Logs, Reports, & Temp
+# ======================================
+*.log
+*.tmp
+*.bak
+*.cache
+*.pid
+hs_err_pid*
+replay_pid*
+
+# ======================================
+# ⚙️ Maven Wrapper
+# ======================================
+.mvn/wrapper/maven-wrapper.jar
+HELP.md
