@@ -1,5 +1,7 @@
 package com.example.chatml.service;
 
+
+import com.example.chatml.model.ChatMessage; // Import the model
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +17,35 @@ public class RagChatService {
     private final ChromaClient chromaClient;
     private final AzureChatClient chatClient;
 
-    public String answer(String question) {
+    /**
+     * UPDATED: The method now accepts the entire chat history.
+     */
+    public String answer(List<ChatMessage> history) {
         System.out.println("\n=== RAG Query Processing ===");
-        System.out.println("Question: " + question);
 
-        // 1. Get embedding for the question
-        List<Double> queryEmbedding = embeddingClient.getEmbedding(question);
+        if (history == null || history.isEmpty()) {
+            return "I'm sorry, I didn't receive a question.";
+        }
 
-        // 2. Detect if this is a temporal query (last, recent, current, etc.)
+        // 1. Get the most recent question from the history
+        ChatMessage lastUserMessage = history.get(history.size() - 1);
+        if (!"user".equalsIgnoreCase(lastUserMessage.getRole())) {
+            // This shouldn't happen if the client is built correctly
+            return "I'm sorry, the last message was not from a user.";
+        }
+        String question = lastUserMessage.getContent();
+        System.out.println("Current Question: " + question);
+
+        // 2. Get embedding for the *current* question
+        String textToEmbed = buildEmbeddingQuery(history);
+        System.out.println("Text to Embed: \n" + textToEmbed);
+        List<Double> queryEmbedding = embeddingClient.getEmbedding(textToEmbed);
+
+        // 3. Detect if this is a temporal query
         boolean isTemporalQuery = isTemporalQuery(question);
         System.out.println("Temporal query detected: " + isTemporalQuery);
 
-        // 3. Determine category filter based on question content
+        // 4. Determine category filter based on question content
         Map<String, Object> filter = null;
         String lowerQuestion = question.toLowerCase();
 
@@ -43,12 +62,11 @@ public class RagChatService {
             System.out.println("Filter: Education only");
         }
 
-        // 4. Retrieve documents with metadata
-        // If asking for "all" experiences/projects, get more results
+        // 5. Retrieve documents with metadata
         int retrievalCount = 5;
         if (lowerQuestion.contains("all") || lowerQuestion.contains("list") ||
                 lowerQuestion.contains("what are")) {
-            retrievalCount = 10; // Get more when user wants everything
+            retrievalCount = 10;
             System.out.println("Comprehensive query detected - retrieving more results");
         }
 
@@ -64,17 +82,14 @@ public class RagChatService {
             return "I don't have enough information to answer that question based on my portfolio data.";
         }
 
-        // 5. Sort by rank and year if temporal query
+        // 6. Sort by rank and year if temporal query
         if (isTemporalQuery) {
             results = sortByRelevance(results);
             System.out.println("Results sorted by recency/rank");
         }
 
-        // 6. Build context from top results
+        // 7. Build context from top results
         StringBuilder contextBuilder = new StringBuilder();
-
-        // If asking for "all", include all filtered results (up to 8)
-        // Otherwise, limit to top 3 most relevant
         int limit = (lowerQuestion.contains("all") || lowerQuestion.contains("list") ||
                 lowerQuestion.contains("what are")) ?
                 Math.min(8, results.size()) : Math.min(3, results.size());
@@ -88,8 +103,6 @@ public class RagChatService {
 
             contextBuilder.append("=== SOURCE ").append(i + 1).append(" ===\n");
             contextBuilder.append(doc);
-
-            // Add year hint if available (helps GPT understand recency)
             if (metadata != null && metadata.containsKey("year")) {
                 contextBuilder.append("\n[Year: ").append(metadata.get("year")).append("]");
             }
@@ -100,8 +113,6 @@ public class RagChatService {
         }
 
         String context = contextBuilder.toString();
-
-        // Limit context length to avoid content filter issues
         if (context.length() > 4000) {
             context = context.substring(0, 4000) + "\n[Content truncated...]";
         }
@@ -109,26 +120,49 @@ public class RagChatService {
         System.out.println("Context built successfully (" + context.length() + " chars)");
         System.out.println("=== End RAG Processing ===\n");
 
-        // 7. Build the final prompt (Azure filter-friendly)
-        String prompt = """
+        // 8. Build the FINAL MESSAGE LIST for the LLM (THE KEY CHANGE)
+
+        // 8a. Define the System Prompt.
+        // This is much better than the one in your simple `chatClient.chat(prompt)`
+        String systemPrompt = """
                 You are Mohamed's portfolio assistant.
                 
-                Use the context below to answer the question accurately.
-                If the question asks about "last" or "recent" experience, use the entry with the most recent year.
-                If the question asks about "all" experiences, list ALL the experiences provided in chronological order (most recent first).
-                Keep your answer natural and well-structured.
-                
+                You MUST follow these rules:
+                1.  Answer the user's question based *only* on the provided CONTEXT.
+                2.  If the CONTEXT is not sufficient, say "I don't have enough information to answer that question based on my portfolio data."
+                3.  Use the chat history for conversational flow (e.g., if they say "tell me more"), but use the new CONTEXT for the facts.
+                4.  If the question asks about "last" or "recent" experience, use the entry with the most recent year from the CONTEXT.
+                5.  If the question asks about "all" experiences, list ALL the experiences provided in the CONTEXT in chronological order (most recent first).
+                6.  Keep your answer natural and well-structured.
+                """;
+
+        // 8b. Create the new list of messages to send to Azure
+        List<ChatMessage> messagesForAzure = new ArrayList<>();
+        messagesForAzure.add(new ChatMessage("system", systemPrompt));
+
+        // 8c. Add all *previous* history (everything *except* the last user message)
+        if (history.size() > 1) {
+            messagesForAzure.addAll(history.subList(0, history.size() - 1));
+        }
+
+        // 8d. Create the new, context-injected user message
+        String userPromptWithContext = """
                 CONTEXT:
                 %s
                 
                 QUESTION: %s
-                
-                ANSWER:
                 """.formatted(context, question);
 
-        // 8. Send to Azure Chat
-        return chatClient.chat(prompt);
+        messagesForAzure.add(new ChatMessage("user", userPromptWithContext));
+
+        // 9. Send to Azure Chat using the stateful method
+        //    (This replaces the old `chatClient.chat(prompt)` call)
+        return chatClient.chatWithMessages(messagesForAzure);
     }
+
+    //
+    // --- ALL HELPER METHODS BELOW ARE UNCHANGED ---
+    //
 
     /**
      * Check if query asks for temporal information (last, recent, current, etc.)
@@ -145,28 +179,20 @@ public class RagChatService {
 
     /**
      * Sort results by rank (ascending) and year (descending)
-     * Lower rank = higher priority (rank 1 is best)
-     * Higher year = more recent
      */
     private List<Map<String, Object>> sortByRelevance(List<Map<String, Object>> results) {
         results.sort((r1, r2) -> {
-            // First: Sort by rank (lower is better)
             Integer rank1 = extractRank(r1);
             Integer rank2 = extractRank(r2);
-
             if (rank1 != null && rank2 != null && !rank1.equals(rank2)) {
-                return rank1.compareTo(rank2); // Lower rank first
+                return rank1.compareTo(rank2);
             }
-
-            // Second: Sort by year (higher/more recent is better)
             Integer year1 = extractYear(r1);
             Integer year2 = extractYear(r2);
-
             if (year1 == null && year2 == null) return 0;
             if (year1 == null) return 1;
             if (year2 == null) return -1;
-
-            return year2.compareTo(year1); // More recent first
+            return year2.compareTo(year1);
         });
         return results;
     }
@@ -187,30 +213,22 @@ public class RagChatService {
     }
 
     /**
-     * Extract year from metadata (handles "2024-Present", "2022-2024", etc.)
+     * Extract year from metadata
      */
     private Integer extractYear(Map<String, Object> result) {
         Map<String, Object> metadata = (Map<String, Object>) result.get("metadata");
-
         if (metadata != null) {
-            // Try start_year first (most reliable)
             if (metadata.containsKey("start_year")) {
                 try {
                     Object startYear = metadata.get("start_year");
                     return Integer.parseInt(startYear.toString());
                 } catch (NumberFormatException ignored) {}
             }
-
-            // Fallback to year field
             if (metadata.containsKey("year")) {
                 String yearStr = metadata.get("year").toString();
-
-                // "Present" = current year (2024)
                 if (yearStr.toLowerCase().contains("present")) {
-                    return 2024;
+                    return 2024; // Or use Calendar.getInstance().get(Calendar.YEAR)
                 }
-
-                // Extract first 4-digit year
                 Pattern pattern = Pattern.compile("(\\d{4})");
                 Matcher matcher = pattern.matcher(yearStr);
                 if (matcher.find()) {
@@ -218,7 +236,30 @@ public class RagChatService {
                 }
             }
         }
-
         return null;
+    }
+    /**
+     * Creates a context-aware string for embedding.
+     * This includes the last few messages to help RAG
+     * understand follow-up questions.
+     */
+    private String buildEmbeddingQuery(List<ChatMessage> history) {
+        StringBuilder queryBuilder = new StringBuilder();
+
+        // Take up to the last 3 messages to build context
+        int historySize = history.size();
+        // Start from the 3rd-to-last message, or the beginning if history is short
+        int startIndex = Math.max(0, historySize - 3);
+
+        for (int i = startIndex; i < historySize; i++) {
+            ChatMessage msg = history.get(i);
+            queryBuilder.append(msg.getRole())
+                    .append(": ")
+                    .append(msg.getContent())
+                    .append("\n"); // Separate messages with a newline
+        }
+
+        // If history is just one message (the question), this just returns "user: [question]"
+        return queryBuilder.toString().trim();
     }
 }
