@@ -1,29 +1,111 @@
-This is an excellent idea. A strong backend README is just as important as the frontend one, as it showcases your system architecture, design choices, and API-building skills.Here is a comprehensive README.md for your Spring Boot backend, based on all the code you've provided.Mohamed's AI Portfolio Assistant (Backend)This is the Spring Boot backend that serves as the "brain" for my AI portfolio assistant. It implements a complete Retrieval-Augmented Generation (RAG) pipeline, connecting my personal data in a vector store to a powerful LLM hosted on Azure.It is a stateless, robust API designed to serve the Next.js Frontend.Core PurposeThis API's job is to provide accurate, context-aware answers to questions about my professional profile. It transforms simple questions into rich, data-driven answers by retrieving relevant information from my portfolio and using an LLM to synthesize a natural response.This backend handles:Data Ingestion & EmbeddingConversational RAG LogicLLM Prompt EngineeringToken-based Cost ManagementArchitecture & Request FlowThe entire system is designed to be intelligent and context-aware. Here is the step-by-step flow for a single query:Receive Request: The ChatRagController receives a POST /api/chat/query request containing the ChatRequest (full history + totalTokensUsedSoFar).Token Limit Check: RagChatService immediately checks if totalTokensUsedSoFar exceeds the CONVERSATION_TOKEN_LIMIT (e.g., 3000 tokens). If it has, the request is blocked to prevent abuse.Contextual Query Embedding (The "Memory"):To solve ambiguous follow-up questions (e.g., "What technologies did he use there?"), the service does not just embed the last question.The buildEmbeddingQuery helper creates a context-aware string from the last 3 messages (e.g., user: ... assistant: ... user: ...).This rich string is sent to the AzureEmbeddingClient.Call Azure Embedding: The client POSTs the string to the Azure OpenAI text-embedding-ada-002 deployment, which returns a 1536-dimension vector.Smart Vector Search:RagChatService analyzes the raw question for keywords (e.g., "experience", "project").It passes the vector and a metadata filter (e.g., {"category": "Project"}) to the ChromaClient.ChromaClient queries the ChromaDB instance to find the top K semantically similar and filtered documents.Context Building & Sorting:If the query was "temporal" ("most recent job"), the results are sorted by rank (priority) and year (recency).The top 3-5 documents are formatted into a CONTEXT: block.Final Prompt Engineering: A complex prompt is assembled for the LLM, including:System Prompt: (Defines the rules and persona: "You are Mohamed's assistant...").Chat History: (The full history, for conversational flow).Context & Question: (The newly retrieved CONTEXT block and the user's last QUESTION).Call Azure Chat: AzureChatClient sends this full payload to the Azure OpenAI gpt-35-turbo deployment.Token Counting & Response:The client parses the usage.total_tokens field from the Azure response.RagChatService calculates the newTotalTokens = totalTokensUsedSoFar + tokensThisTurn.The final ChatResponse object (containing the answer, newTotalTokens, and limitReached flag) is returned to the frontend.Tech Stack & ToolsFramework: Spring Boot 3 (Java 17)Used for its robust, production-grade REST controllers, dependency injection, and simple configuration.LLM Service: Azure OpenAI (gpt-35-turbo)A powerful chat model deployed securely on my Azure instance, providing fast and coherent responses.Embedding Service: Azure OpenAI (text-embedding-ada-002)The industry-standard model for generating high-quality text embeddings, also deployed on Azure.Vector Database: ChromaDBAn open-source vector store used to index and query my portfolio documents based on semantic similarity.HTTP Client: Spring RestTemplateUsed in AzureChatClient and ChromaClient to communicate with the external Azure and ChromaDB APIs.Data Ingestion: JacksonUsed by Spring to automatically parse the portfolio-data.json for the ingestion controller.Key FeaturesFull RAG Pipeline: Implements the complete Retrieve-Augment-Generate pattern in Java.Conversational Memory: Solves the follow-up question problem using contextual embeddings, a more advanced RAG technique.Metadata Filtering & Sorting: Queries are not just based on similarity. The code filters by category and sorts by rank and year to provide the most relevant possible answer (e.g., ensuring "most recent job" returns the correct job).Stateless Token Management: Manages demo costs and prevents abuse by passing the token count to the client and checking it on every request, requiring no server-side session or database.Rich Data Ingestion: The PortfolioIngestionService dynamically builds detailed documents from a simple JSON, combining titles, summaries, responsibilities, and technologies into a single block for better embedding.API EndpointsMethodEndpointDescriptionPOST/api/chat/queryMain conversational endpoint. Receives a ChatRequest and returns a ChatResponse.POST/api/data/loadSetup endpoint. Reads portfolio-data.json from src/main/resources and ingests it into ChromaDB.POST/api/debug/toneA simple, non-RAG endpoint to test the LLM's system prompt and persona.Setup & Running Locally1. PrerequisitesJava 17+ (JDK)Apache MavenA running ChromaDB instance (this project is configured for a remote one on Azure).Azure OpenAI credentials with two deployments: one for chat (gpt-35-turbo) and one for embeddings (text-embedding-ada-002).2. ConfigurationCreate a file named application.properties in src/main/resources and paste in your credentials.Properties# application.properties
+Mohamed's AI Portfolio Assistant (Backend)
+This is the Spring Boot backend that serves as the "brain" for my AI portfolio assistant. It implements a complete Retrieval-Augmented Generation (RAG) pipeline, connecting my personal data in a vector store to a powerful LLM hosted on Azure.
 
-SPRING_APPLICATION_NAME=chatML
+Core Purpose
+This API's job is to provide accurate, context-aware answers to questions about my professional profile. It transforms simple questions into rich, data-driven answers by retrieving relevant information from my portfolio and using an LLM to synthesize a natural response.
 
-# Azure OpenAI
-# (Replace with your own Azure endpoint and keys)
-AZURE_OPENAI_BASE_URL=https://hamabakabot.openai.azure.com
-AZURE_OPENAI_API_KEY=YOUR_AZURE_OPENAI_API_KEY_HERE
-AZURE_OPENAI_CHAT_API_VERSION=2024-12-01-preview
-AZURE_OPENAI_EMBEDDING_API_VERSION=2023-05-15
-AZURE_OPENAI_CHAT_DEPLOYMENT=gpt-35-turbo
-AZURE_OPENAI_EMBEDDING_DEPLOYMENT=text-embedding-ada-002
+This backend handles:
 
-# ChromaDB
-# (Replace with your ChromaDB instance URL)
-CHROMA_URL=https://chroma-app.wittysea-fcb1875a.swedencentral.azurecontainerapps.io
-CHROMA_COLLECTION=portfolio_v1
+Data Ingestion & Embedding
 
+Conversational RAG Logic
 
-# Server
-SERVER_PORT=8080
-3. Add Your DataPlace your portfolio-data.json file (containing your projects, experience, etc.) into the src/main/resources directory.4. Run the ApplicationBash# Clean and build the project
-mvn clean install
+LLM Prompt Engineering
 
-# Run the Spring Boot application
-mvn spring-boot:run
-The server will start on http://localhost:8080.5. Ingest Your DataThis is a critical one-time step. Before you can chat, you must load your data into ChromaDB.Using Postman or curl, send a POST request to the /api/data/load endpoint:Bash# Using curl:
-curl -X POST http://localhost:8080/api/data/load
-You will see logs in your Spring console confirming that each document has been ingested and upserted into ChromaDB.You are now ready to connect the frontend or test the API directly!LicenseMIT License
+Token-based Cost Management
+
+This is an excellent idea. A strong backend README is just as important as the frontend one, as it showcases your system architecture, design choices, and API-building skills.
+
+Here is a comprehensive README.md for your Spring Boot backend, based on all the code you've provided.
+
+Mohamed's AI Portfolio Assistant (Backend)
+This is the Spring Boot backend that serves as the "brain" for my AI portfolio assistant. It implements a complete Retrieval-Augmented Generation (RAG) pipeline, connecting my personal data in a vector store to a powerful LLM hosted on Azure.
+
+It is a stateless, robust API designed to serve the Next.js Frontend.
+
+Core Purpose
+This API's job is to provide accurate, context-aware answers to questions about my professional profile. It transforms simple questions into rich, data-driven answers by retrieving relevant information from my portfolio and using an LLM to synthesize a natural response.
+
+This backend handles:
+
+Data Ingestion & Embedding
+
+Conversational RAG Logic
+
+LLM Prompt Engineering
+
+Token-based Cost Management
+
+Architecture & Request Flow
+The entire system is designed to be intelligent and context-aware. Here is the step-by-step flow for a single query:
+
+Receive Request: The ChatRagController receives a POST /api/chat/query request containing the ChatRequest (full history + totalTokensUsedSoFar).
+
+Token Limit Check: RagChatService immediately checks if totalTokensUsedSoFar exceeds the CONVERSATION_TOKEN_LIMIT (e.g., 3000 tokens). If it has, the request is blocked to prevent abuse.
+
+Contextual Query Embedding (The "Memory"):
+
+To solve ambiguous follow-up questions (e.g., "What technologies did he use there?"), the service does not just embed the last question.
+
+The buildEmbeddingQuery helper creates a context-aware string from the last 3 messages (e.g., user: ... assistant: ... user: ...).
+
+This rich string is sent to the AzureEmbeddingClient.
+
+Call Azure Embedding: The client POSTs the string to the Azure OpenAI text-embedding-ada-002 deployment, which returns a 1536-dimension vector.
+
+Smart Vector Search:
+
+RagChatService analyzes the raw question for keywords (e.g., "experience", "project").
+
+It passes the vector and a metadata filter (e.g., {"category": "Project"}) to the ChromaClient.
+
+ChromaClient queries the ChromaDB instance to find the top K semantically similar and filtered documents.
+
+Context Building & Sorting:
+
+If the query was "temporal" ("most recent job"), the results are sorted by rank (priority) and year (recency).
+
+The top 3-5 documents are formatted into a CONTEXT: block.
+
+Final Prompt Engineering: A complex prompt is assembled for the LLM, including:
+
+System Prompt: (Defines the rules and persona: "You are Mohamed's assistant...").
+
+Chat History: (The full history, for conversational flow).
+
+Context & Question: (The newly retrieved CONTEXT block and the user's last QUESTION).
+
+Call Azure Chat: AzureChatClient sends this full payload to the Azure OpenAI gpt-35-turbo deployment.
+
+Token Counting & Response:
+
+The client parses the usage.total_tokens field from the Azure response.
+
+RagChatService calculates the newTotalTokens = totalTokensUsedSoFar + tokensThisTurn.
+
+The final ChatResponse object (containing the answer, newTotalTokens, and limitReached flag) is returned to the frontend.
+
+Tech Stack & Tools
+Framework: Spring Boot 3 (Java 17)
+
+Used for its robust, production-grade REST controllers, dependency injection, and simple configuration.
+
+LLM Service: Azure OpenAI (gpt-35-turbo)
+
+A powerful chat model deployed securely on my Azure instance, providing fast and coherent responses.
+
+Embedding Service: Azure OpenAI (text-embedding-ada-002)
+
+The industry-standard model for generating high-quality text embeddings, also deployed on Azure.
+
+Vector Database: ChromaDB
+
+An open-source vector store used to index and query my portfolio documents based on semantic similarity.
+
+HTTP Client: Spring RestTemplate
+
+Used in AzureChatClient and ChromaClient to communicate with the external Azure and ChromaDB APIs.
+
+Data Ingestion: Jackson
+
+Used by Spring to automatically parse the portfolio-data.json for the ingestion controller.
