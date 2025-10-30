@@ -66,17 +66,24 @@ public class RagChatService {
         System.out.println("Temporal query detected: " + isTemporalQuery);
 
         // 6. Determine category filter based on question content
+        // 6. Determine category filter based on question content
         Map<String, Object> filter = null;
         String lowerQuestion = question.toLowerCase();
 
-        if (lowerQuestion.contains("experience") || lowerQuestion.contains("work") ||
+        // --- START OF FIX ---
+        // Prioritize "Project" if mentioned, as it's more specific.
+        if (lowerQuestion.contains("project")) {
+            filter = Map.of("category", "Project");
+            System.out.println("Filter: Project only");
+        }
+        // If "project" isn't mentioned, *then* check for "experience".
+        else if (lowerQuestion.contains("experience") || lowerQuestion.contains("work") ||
                 lowerQuestion.contains("job") || lowerQuestion.contains("professional")) {
             filter = Map.of("category", "Experience");
             System.out.println("Filter: Experience only");
-        } else if (lowerQuestion.contains("project")) {
-            filter = Map.of("category", "Project");
-            System.out.println("Filter: Project only");
-        } else if (lowerQuestion.contains("education") || lowerQuestion.contains("study") ||
+        }
+        // Finally, check for "education".
+        else if (lowerQuestion.contains("education") || lowerQuestion.contains("study") ||
                 lowerQuestion.contains("degree") || lowerQuestion.contains("university")) {
             filter = Map.of("category", "Education");
             System.out.println("Filter: Education only");
