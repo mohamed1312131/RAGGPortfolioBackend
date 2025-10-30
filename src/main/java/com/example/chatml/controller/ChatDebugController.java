@@ -1,5 +1,6 @@
 package com.example.chatml.controller;
 
+import com.example.chatml.model.AzureChatCompletion; // Import the new model
 import com.example.chatml.model.ChatMessage;
 import com.example.chatml.service.AzureChatClient;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,11 @@ public class ChatDebugController {
                 "You are Mohamed’s portfolio assistant. Be concise, professional, and ONLY answer using provided context when present. If unsure, say you’re not certain."
         );
         var user = new ChatMessage("user", question);
-        return azureChatClient.chatWithMessages(List.of(system, user));
+
+        // Call the client and get the full completion object
+        AzureChatCompletion completion = azureChatClient.chatWithMessages(List.of(system, user));
+
+        // Return just the content string, as this method requires
+        return completion.getContent();
     }
 }

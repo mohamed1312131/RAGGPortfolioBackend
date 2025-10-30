@@ -1,7 +1,10 @@
 package com.example.chatml.service;
 
-
-import com.example.chatml.model.ChatMessage; // Import the model
+// NEW: Import the required models for token management
+import com.example.chatml.model.AzureChatCompletion;
+import com.example.chatml.model.ChatRequest;
+import com.example.chatml.model.ChatResponse;
+import com.example.chatml.model.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,39 +16,56 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class RagChatService {
 
+    // Token limit for a single "demo" conversation
+    private static final int CONVERSATION_TOKEN_LIMIT = 3000;
+
     private final AzureEmbeddingClient embeddingClient;
     private final ChromaClient chromaClient;
     private final AzureChatClient chatClient;
 
     /**
-     * UPDATED: The method now accepts the entire chat history.
+     * UPDATED: Accepts a ChatRequest and returns a ChatResponse
+     * (This includes history AND token count)
      */
-    public String answer(List<ChatMessage> history) {
+    public ChatResponse answer(ChatRequest request) { // <-- UPDATED Signature
         System.out.println("\n=== RAG Query Processing ===");
 
-        if (history == null || history.isEmpty()) {
-            return "I'm sorry, I didn't receive a question.";
+        // 1. Get request data
+        List<ChatMessage> history = request.getHistory();
+        int totalTokensUsedSoFar = request.getTotalTokensUsedSoFar();
+        System.out.println("Tokens used so far: " + totalTokensUsedSoFar);
+
+        // 2. CHECK TOKEN LIMIT (PRE-FLIGHT)
+        if (totalTokensUsedSoFar >= CONVERSATION_TOKEN_LIMIT) {
+            System.out.println("TOKEN LIMIT REACHED. Blocking request.");
+            return new ChatResponse(
+                    "I'm sorry, this chat demo has reached its token limit. Please refresh to start a new conversation.",
+                    totalTokensUsedSoFar,
+                    true // limitReached = true
+            );
         }
 
-        // 1. Get the most recent question from the history
+        // 3. Get the most recent question
+        if (history == null || history.isEmpty()) {
+            return new ChatResponse("I'm sorry, I didn't receive a question.", totalTokensUsedSoFar, false);
+        }
         ChatMessage lastUserMessage = history.get(history.size() - 1);
         if (!"user".equalsIgnoreCase(lastUserMessage.getRole())) {
-            // This shouldn't happen if the client is built correctly
-            return "I'm sorry, the last message was not from a user.";
+            return new ChatResponse("I'm sorry, the last message was not from a user.", totalTokensUsedSoFar, false);
         }
         String question = lastUserMessage.getContent();
         System.out.println("Current Question: " + question);
 
-        // 2. Get embedding for the *current* question
+        // 4. Get embedding for the *context-aware* query
         String textToEmbed = buildEmbeddingQuery(history);
         System.out.println("Text to Embed: \n" + textToEmbed);
         List<Double> queryEmbedding = embeddingClient.getEmbedding(textToEmbed);
 
-        // 3. Detect if this is a temporal query
+        // 5. Detect if this is a temporal query (using the raw question)
         boolean isTemporalQuery = isTemporalQuery(question);
         System.out.println("Temporal query detected: " + isTemporalQuery);
 
-        // 4. Determine category filter based on question content
+        // 6. Determine category filter based on question content
         Map<String, Object> filter = null;
         String lowerQuestion = question.toLowerCase();
 
@@ -62,7 +82,7 @@ public class RagChatService {
             System.out.println("Filter: Education only");
         }
 
-        // 5. Retrieve documents with metadata
+        // 7. Retrieve documents with metadata
         int retrievalCount = 5;
         if (lowerQuestion.contains("all") || lowerQuestion.contains("list") ||
                 lowerQuestion.contains("what are")) {
@@ -79,16 +99,16 @@ public class RagChatService {
         }
 
         if (results.isEmpty()) {
-            return "I don't have enough information to answer that question based on my portfolio data.";
+            return new ChatResponse("I don't have enough information to answer that question based on my portfolio data.", totalTokensUsedSoFar, false);
         }
 
-        // 6. Sort by rank and year if temporal query
+        // 8. Sort by rank and year if temporal query
         if (isTemporalQuery) {
             results = sortByRelevance(results);
             System.out.println("Results sorted by recency/rank");
         }
 
-        // 7. Build context from top results
+        // 9. Build context from top results
         StringBuilder contextBuilder = new StringBuilder();
         int limit = (lowerQuestion.contains("all") || lowerQuestion.contains("list") ||
                 lowerQuestion.contains("what are")) ?
@@ -120,32 +140,59 @@ public class RagChatService {
         System.out.println("Context built successfully (" + context.length() + " chars)");
         System.out.println("=== End RAG Processing ===\n");
 
-        // 8. Build the FINAL MESSAGE LIST for the LLM (THE KEY CHANGE)
+        // 10. Build the FINAL MESSAGE LIST for the LLM
 
-        // 8a. Define the System Prompt.
-        // This is much better than the one in your simple `chatClient.chat(prompt)`
+        // 10a. Define the System Prompt.
+        // ========== THIS IS THE MODIFIED SECTION ==========
         String systemPrompt = """
-                You are Mohamed's portfolio assistant.
-                
-                You MUST follow these rules:
-                1.  Answer the user's question based *only* on the provided CONTEXT.
-                2.  If the CONTEXT is not sufficient, say "I don't have enough information to answer that question based on my portfolio data."
-                3.  Use the chat history for conversational flow (e.g., if they say "tell me more"), but use the new CONTEXT for the facts.
-                4.  If the question asks about "last" or "recent" experience, use the entry with the most recent year from the CONTEXT.
-                5.  If the question asks about "all" experiences, list ALL the experiences provided in the CONTEXT in chronological order (most recent first).
-                6.  Keep your answer natural and well-structured.
-                """;
+        You are Mohamed Salah Mechergui, a 28-year-old software engineer from Tunis, Tunisia.
+        Answer all questions as yourself, using the first person ("I", "my", "am").
+        Be professional, conversational, and authentic—like you're talking to a recruiter or tech lead.
+        
+        CORE RULES:
+        1. Answer questions based PRIMARILY on the provided CONTEXT (your portfolio data).
+        2. If the CONTEXT contains the answer, use it directly and confidently.
+        3. If the CONTEXT is insufficient, say: "I don't have that specific information in my portfolio, but let me tell you what I do know..." and provide related info if available.
+        4. For general technical questions (e.g., "What is Kafka?"), you may briefly explain the concept, then IMMEDIATELY connect it to how YOU used it in your experience from the CONTEXT.
+        5. Use chat history for conversational flow (e.g., "tell me more", "what about X"), but always pull FACTS from the new CONTEXT provided.
+        
+        TEMPORAL QUERIES:
+        - "last" / "recent" / "current" → Use the most recent entry by year/date from CONTEXT
+        - "all" / "list" → Include ALL relevant entries from CONTEXT, ordered by recency
+        - If asked "what are you doing now" or "current work" → prioritize entries with rank 0 or is_current=true
+        
+        PERSONALITY:
+        - Be enthusiastic when discussing technical challenges or learning
+        - Show confidence in Java/Spring Boot areas
+        - Be honest about what you're still learning (e.g., Azure)
+        - Mention your dedication (work + night school) naturally when relevant
+        - Keep responses concise but informative (2-4 sentences for simple questions, more for complex ones)
+        
+        RECRUITER-FOCUSED:
+        - Emphasize achievements with impact (e.g., "reduced costs", "improved efficiency")
+        - Connect technical skills to real-world problems you've solved
+        - Show eagerness for complex, challenging projects
+        - Be humble but confident—don't undersell yourself
+        
+        AVOID:
+        - Repeating the same info multiple times
+        - Being overly formal or robotic
+        - Saying "based on my portfolio data" repeatedly (they know you're a bot)
+        - Long, unfocused answers—get to the point
+        """;
+        // ========== END OF MODIFIED SECTION ==========
 
-        // 8b. Create the new list of messages to send to Azure
+
+        // 10b. Create the new list of messages to send to Azure
         List<ChatMessage> messagesForAzure = new ArrayList<>();
         messagesForAzure.add(new ChatMessage("system", systemPrompt));
 
-        // 8c. Add all *previous* history (everything *except* the last user message)
+        // 10c. Add all *previous* history (everything *except* the last user message)
         if (history.size() > 1) {
             messagesForAzure.addAll(history.subList(0, history.size() - 1));
         }
 
-        // 8d. Create the new, context-injected user message
+        // 10d. Create the new, context-injected user message
         String userPromptWithContext = """
                 CONTEXT:
                 %s
@@ -155,9 +202,25 @@ public class RagChatService {
 
         messagesForAzure.add(new ChatMessage("user", userPromptWithContext));
 
-        // 9. Send to Azure Chat using the stateful method
-        //    (This replaces the old `chatClient.chat(prompt)` call)
-        return chatClient.chatWithMessages(messagesForAzure);
+        // 11. Send to Azure Chat and GET TOKEN COUNT
+        //    (This replaces the old `return chatClient.chatWithMessages(...)` call)
+        AzureChatCompletion completion = chatClient.chatWithMessages(messagesForAzure);
+
+        String answer = completion.getContent();
+        int tokensThisTurn = completion.getTotalTokens();
+        System.out.println("Tokens THIS turn: " + tokensThisTurn);
+
+        // 12. Calculate new total and final limit check
+        int newTotalTokens = totalTokensUsedSoFar + tokensThisTurn;
+        boolean limitReached = newTotalTokens >= CONVERSATION_TOKEN_LIMIT;
+
+        System.out.println("New total tokens: " + newTotalTokens);
+        if (limitReached) {
+            System.out.println("TOKEN LIMIT WILL BE REACHED AFTER THIS RESPONSE.");
+        }
+
+        // 13. Return the full response object
+        return new ChatResponse(answer, newTotalTokens, limitReached);
     }
 
     //
@@ -227,7 +290,8 @@ public class RagChatService {
             if (metadata.containsKey("year")) {
                 String yearStr = metadata.get("year").toString();
                 if (yearStr.toLowerCase().contains("present")) {
-                    return 2024; // Or use Calendar.getInstance().get(Calendar.YEAR)
+                    // Use Calendar to get the current year dynamically
+                    return Calendar.getInstance().get(Calendar.YEAR);
                 }
                 Pattern pattern = Pattern.compile("(\\d{4})");
                 Matcher matcher = pattern.matcher(yearStr);
@@ -238,6 +302,7 @@ public class RagChatService {
         }
         return null;
     }
+
     /**
      * Creates a context-aware string for embedding.
      * This includes the last few messages to help RAG

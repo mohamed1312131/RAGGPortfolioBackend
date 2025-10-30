@@ -16,35 +16,36 @@
   },
 
   {
-    "id": "exp-001",
+    "id": "exp-001-update",
     "category": "Experience",
-    "title": "Technical Support Specialist – The Hive",
+    "title": "Technical Support Specialist – The Hive (UPDATED)",
     "company": "The Hive",
     "position": "L2 Technical Support Specialist",
-    "tags": ["technical support", "L2 support", "current job", "debugging", "production", "incident management"],
+    "tags": ["technical support", "L2 support", "current job", "luxury brands", "global scale", "budget reduction", "servicenow"],
     "rank": 1,
     "duration": "2024 - Present",
-    "summary": "I work as a Level 2 Technical Support Specialist at The Hive, handling incident investigations and collaborating with developers to resolve system-level issues efficiently.",
-    "content": "As an L2 Technical Support Specialist at The Hive, I manage and resolve user-reported tickets and incidents. I investigate and reproduce issues using Postman, Elasticsearch (Kibana), Kafka, and JIRA, performing root cause analysis and coordinating with development and infrastructure teams to escalate and resolve problems efficiently. I handle production incidents involving API validation, Kafka event tracing, and log debugging. I've reduced incident resolution time by streamlining ticket workflows and created an internal troubleshooting knowledge base for faster team response.",
+    "summary": "I work with luxury brands, supporting worldwide applications with complex architectures. I've reduced ticket resolution costs and created internal documentation to improve team efficiency.",
+    "content": "As an L2 Technical Support Specialist at The Hive, I support multiple applications used by luxury brands worldwide. These systems have giant, complex architectures with multiple data sources and distributed microservices. I manage and resolve user-reported tickets, investigate production incidents using Postman, Elasticsearch (Kibana), Kafka, and JIRA, and perform root cause analysis. I coordinate with development and infrastructure teams to escalate and resolve problems efficiently. One of my key achievements was reducing the budget of our ticket pipeline by streamlining workflows and creating internal troubleshooting documentation. Since ServiceNow ticket resolution time is expensive, the company was very happy with this cost reduction. I've also improved our debugging processes through automation scripts, making the team more efficient overall.",
     "responsibilities": [
-      "Managing and resolving L2 technical support tickets",
+      "Supporting luxury brand applications used globally",
+      "Managing L2 technical support tickets across complex architectures",
       "Investigating production incidents using Postman, Kibana, and Kafka",
-      "Performing root cause analysis on system issues",
-      "Coordinating with development and infrastructure teams",
+      "Performing root cause analysis and coordinating with dev teams",
       "Creating internal documentation and knowledge base"
     ],
     "achievements": [
-      "Reduced incident resolution time by streamlining ticket workflows",
-      "Created an internal troubleshooting knowledge base for faster team response",
+      "Reduced ticket resolution budget, saving significant ServiceNow costs",
+      "Created internal troubleshooting knowledge base",
       "Improved debugging process through automation scripts"
     ],
-    "technologies": ["Postman", "Elasticsearch", "Kibana", "Kafka", "JIRA"],
+    "technologies": ["Postman", "Elasticsearch", "Kibana", "Kafka", "JIRA", "ServiceNow"],
     "metadata": {
       "year": "2024-Present",
       "start_year": "2024",
       "type": "professional",
       "is_current": true,
-      "employment_type": "full-time"
+      "employment_type": "full-time",
+      "priority": "critical"
     }
   },
 
@@ -279,6 +280,219 @@
     "metadata": {
       "type": "behavioral",
       "language": "en"
+    }
+  },
+  {
+    "id": "about-002",
+    "category": "About",
+    "title": "Current Daily Work & Context",
+    "tags": ["current", "daily", "work", "luxury brands", "global scale", "production support"],
+    "rank": 0,
+    "summary": "I currently work with luxury brands, supporting multiple worldwide applications with complex, giant architectures. I'm also maintaining a freelance e-commerce project I've been working on for 4 months.",
+    "content": "Right now, I work as an L2 Technical Support Specialist at The Hive, where we support applications for luxury brands used globally. These systems have massive, complex architectures with multiple data sources, which means I'm constantly dealing with distributed systems, debugging production incidents across microservices, and tracing issues through Kafka streams and Elasticsearch logs. On the side, I've been maintaining a freelance project for the past 4 months—a fully customizable e-commerce platform where the admin can track, update, and change anything on the client's frontend. You can check my GitHub for reference. Balancing full-time work, freelance projects, and night school keeps me busy, but I love the challenge and the constant learning.",
+    "technologies": ["Kafka", "Elasticsearch", "Microservices", "Production Support", "Angular", "Spring Boot"],
+    "metadata": {
+      "type": "current_state",
+      "priority": "critical",
+      "year": "2024-2025"
+    }
+  },
+  {
+    "id": "approach-001",
+    "category": "Approach",
+    "title": "How I Approach Debugging",
+    "tags": ["debugging", "methodology", "problem solving", "data flow", "troubleshooting"],
+    "rank": 1,
+    "summary": "I follow the data flow pipeline to debug issues, tracing from source to destination through each system layer.",
+    "content": "When I debug an issue, I always follow the pipeline of the data flow. I start by identifying where the data enters the system, then trace it through each layer—API endpoints, service logic, database queries, message queues like Kafka, and finally the response. I use tools like Postman to reproduce the request, Kibana to check logs at each step, and Kafka UI to verify events are being published and consumed correctly. This systematic approach helps me pinpoint exactly where things break, whether it's a validation error, a missing event, a database timeout, or a misconfigured service. I've found that understanding the full journey of data through the system is the fastest way to identify root causes.",
+    "technologies": ["Debugging", "Postman", "Kibana", "Kafka", "System Analysis"],
+    "metadata": {
+      "type": "methodology",
+      "priority": "high"
+    }
+  },
+  {
+    "id": "motivation-001",
+    "category": "Personal",
+    "title": "Why I Chose Software Engineering",
+    "tags": ["motivation", "passion", "career choice", "personal story"],
+    "rank": 1,
+    "summary": "I've loved tech since I was a kid—it's the one thing I know I'm truly good at.",
+    "content": "I chose software engineering because I've loved tech since I was a kid. Growing up, I was always the one fixing computers, figuring out how things worked, and getting excited about new technology. It's honestly the only thing I feel I'm truly good at—that natural pull toward understanding systems and building things. When I write code that solves a real problem or when I finally track down a tricky bug, that satisfaction is unmatched. For me, software engineering isn't just a career choice; it's what I'm meant to do.",
+    "metadata": {
+      "type": "personal_motivation",
+      "priority": "high"
+    }
+  },
+  {
+    "id": "challenge-001",
+    "category": "Technical",
+    "title": "My Biggest Technical Challenge",
+    "tags": ["challenge", "learning", "growth", "rag", "microservices", "blockchain"],
+    "rank": 1,
+    "summary": "Building the RAG pipeline for CareForElders and implementing blockchain-based access control for FullCare_App were my biggest technical challenges.",
+    "content": "My biggest technical challenge was building the RAG (Retrieval-Augmented Generation) pipeline for the CareForElders project. Understanding how to transform text into meaningful vector embeddings, how the LLM interprets that vector space, and how to structure the retrieval logic to get relevant context was completely new territory for me. I had to learn about semantic search, ChromaDB, embedding models, and how to architect a system where the AI responses are grounded in actual data rather than hallucinations. Managing the Docker containers, scripting the data ingestion pipeline, and debugging why certain queries weren't retrieving the right documents took a lot of trial and error. Another major challenge was implementing the blockchain-based medical record access control in FullCare_App using Hedera Hashgraph. Working with NFTs, understanding the Hedera Token Service, and ensuring secure, decentralized access to sensitive medical data required me to think completely differently about authentication and authorization. Both projects pushed me far outside my comfort zone, but they taught me that I can learn anything if I break it down step by step.",
+    "technologies": ["RAG", "ChromaDB", "Vector Embeddings", "Hedera Hashgraph", "NFT", "Docker"],
+    "metadata": {
+      "type": "technical_challenge",
+      "priority": "high"
+    }
+  },
+  {
+    "id": "learning-001",
+    "category": "Personal",
+    "title": "What I'm Currently Learning",
+    "tags": ["learning", "azure", "cloud", "current", "devops"],
+    "rank": 0,
+    "summary": "I'm currently learning Azure cloud concepts. I've already deployed this portfolio chatbot on Azure and can monitor resources, but I want to dive deeper into cloud architecture.",
+    "content": "Right now, I'm focused on learning Azure cloud concepts. I've already deployed this portfolio chatbot on Azure and I can monitor resources through the Azure portal, but I want to dive much deeper—understanding Azure Functions, App Services, Container Instances, and how to architect scalable, cost-effective cloud solutions. I'm also exploring Azure OpenAI Service integration, managed databases, and CI/CD pipelines with Azure DevOps. My goal is to become confident in designing and deploying full production-grade applications on Azure, not just hosting them. Cloud is the future, and I want to be strong in at least one major platform.",
+    "technologies": ["Azure", "Azure OpenAI", "Cloud Architecture", "DevOps", "CI/CD"],
+    "metadata": {
+      "type": "current_learning",
+      "priority": "critical",
+      "year": "2024-2025"
+    }
+  },
+  {
+    "id": "worklife-001",
+    "category": "Personal",
+    "title": "Balancing Work and Night School",
+    "tags": ["work-life balance", "education", "discipline", "dedication", "night school"],
+    "rank": 1,
+    "summary": "Balancing full-time work, freelance projects, and night school is tough—I have almost no social life—but it's a challenge I've successfully managed and I'm close to finishing.",
+    "content": "Balancing full-time work at The Hive, freelance projects, and night school at ESPRIT is honestly difficult. I have almost no social life—most of my time goes into working during the day, attending classes at night, and squeezing in freelance work and studying on weekends. But I see it as a good challenge. I chose the night program specifically so I could gain professional experience and fund my education at the same time, and I'm proud that I've made it this far. I graduate in 2026, and knowing that I've managed to work, study, and keep learning new technologies simultaneously shows me that I can handle pressure and stay committed to my goals. It's taught me discipline, time management, and resilience—skills that are just as valuable as any technical knowledge.",
+    "metadata": {
+      "type": "personal_story",
+      "priority": "high",
+      "year": "2022-2026"
+    }
+  },
+  {
+    "id": "career-001",
+    "category": "Vision",
+    "title": "Career Goals & Aspirations",
+    "tags": ["career goals", "ambition", "backend", "complex systems", "growth"],
+    "rank": 1,
+    "summary": "I want to be part of a huge, complex project that challenges me deeply—especially in backend performance, distributed systems, and large-scale architecture.",
+    "content": "Honestly, I want to be part of a huge, complex project that really tests my limits. I'm talking about systems with multiple services, high traffic, performance bottlenecks to solve, and challenging architectural decisions to make. I want a role where I'm constantly learning, where I have to deep dive into backend performance optimization, distributed systems, caching strategies, database scaling, and microservices orchestration. I thrive in environments where the problems are hard and the stakes are high. I don't want to just maintain existing systems—I want to build, improve, and architect solutions that handle real-world scale. That's where I see myself growing the most, and that's the kind of work that excites me.",
+    "metadata": {
+      "type": "career_goals",
+      "priority": "critical"
+    }
+  },
+  {
+    "id": "strengths-001",
+    "category": "Skills",
+    "title": "Core Strengths & Confidence Areas",
+    "tags": ["strengths", "java", "spring boot", "backend", "confidence", "expertise"],
+    "rank": 1,
+    "summary": "I'm confident in anything tech-related, but especially in Java and Spring Boot concepts—from dependency injection to microservices architecture.",
+    "content": "I'm confident in anything related to technology, but I'm especially strong in Java and Spring Boot. I understand the core concepts deeply—dependency injection, Spring's IoC container, AOP, Spring Data JPA, Spring Security, building RESTful APIs, exception handling, validation, and testing with JUnit and Mockito. I've built multiple production-level applications with Spring Boot, and I'm comfortable working with Spring Cloud for microservices, including service discovery, API gateways, and distributed configuration. I can debug complex issues, optimize performance, and design clean, maintainable architectures. When it comes to backend development, I know what I'm doing, and I can pick up new frameworks or languages quickly because I understand the underlying principles.",
+    "technologies": ["Java", "Spring Boot", "Spring Cloud", "Microservices", "REST APIs"],
+    "metadata": {
+      "type": "strengths",
+      "priority": "critical"
+    }
+  },
+  {
+    "id": "achievement-001",
+    "category": "Experience",
+    "title": "Budget Reduction Achievement at The Hive",
+    "tags": ["achievement", "cost reduction", "efficiency", "servicenow", "process improvement"],
+    "rank": 1,
+    "summary": "I reduced the budget of our ticket pipeline at The Hive, which made the company very happy since ServiceNow ticket resolution time costs a lot.",
+    "content": "One of my key achievements at The Hive was reducing the budget of our ticket resolution pipeline. The company was spending heavily on ServiceNow ticket resolution time, and I identified inefficiencies in our workflow. By streamlining the investigation process, creating internal documentation, and automating repetitive debugging steps, I was able to significantly cut down resolution time. This directly reduced costs, and the company was very happy with the results. It taught me that even in a support role, there's always room to improve processes and add value beyond just resolving tickets.",
+    "technologies": ["ServiceNow", "Process Improvement", "Automation"],
+    "metadata": {
+      "type": "achievement",
+      "year": "2024",
+      "priority": "high"
+    }
+  },
+  {
+    "id": "softskills-001",
+    "category": "Skills",
+    "title": "Soft Skills & Professional Qualities",
+    "tags": ["soft skills", "communication", "teamwork", "problem solving", "adaptability"],
+    "rank": 1,
+    "summary": "Strong communication, teamwork, problem-solving, adaptability, time management, and a proactive learning mindset.",
+    "content": "Beyond technical skills, I bring strong soft skills to any team. I communicate clearly and effectively, whether I'm explaining a technical issue to a non-technical stakeholder, writing documentation, or collaborating with developers and infrastructure teams. I work well in teams and understand that the best solutions come from collaboration, not working in silos. I'm a strong problem-solver—I stay calm under pressure, break down complex issues, and find root causes systematically. I'm highly adaptable and can learn new tools or technologies quickly. My time management skills are solid—I've proven that by balancing work, freelance projects, and night school successfully. Most importantly, I'm proactive. I don't wait for someone to tell me what to learn or how to improve—I take initiative and push myself to grow.",
+    "metadata": {
+      "type": "soft_skills",
+      "priority": "high"
+    }
+  },
+  {
+    "id": "career-002",
+    "category": "Vision",
+    "title": "Why Looking for New Opportunities",
+    "tags": ["job search", "motivation", "growth", "development role"],
+    "rank": 1,
+    "summary": "I'm looking for a new challenge. I'll soon graduate as a software engineer and want to transition fully into development, diving deeper into building complex systems.",
+    "content": "I'm looking for new opportunities because I'm seeking a new challenge. I'll graduate as a software engineer in 2026, and I want to transition fully into a development role where I can dive deep into building complex systems, not just supporting them. My current role has taught me a lot about production systems, debugging, and how real-world applications work at scale, but I'm ready to be on the other side—designing, architecting, and writing the code that powers those systems. I want to grow as a backend engineer, work on challenging projects, and be part of a team that's building something meaningful and technically demanding.",
+    "metadata": {
+      "type": "career_transition",
+      "priority": "high"
+    }
+  },
+  {
+    "id": "salary-001",
+    "category": "Professional",
+    "title": "Salary Expectations",
+    "tags": ["salary", "compensation", "expectations"],
+    "rank": 1,
+    "summary": "Based on my experience and skills, I think 1500 dinars would be a fair starting point, but I'm open to discussion based on the role and growth opportunities.",
+    "content": "Based on my experience, skills, and the value I bring, I think 1500 dinars would be a fair starting salary. However, I'm flexible and open to discussion depending on the role, the company, and the growth opportunities available. What's most important to me is joining a team where I can learn, contribute meaningfully, and grow as an engineer. If the project is challenging and the learning environment is strong, I'm willing to be reasonable about compensation.",
+    "metadata": {
+      "type": "compensation",
+      "priority": "medium"
+    }
+  },
+  {
+    "id": "relocation-001",
+    "category": "Professional",
+    "title": "Relocation Willingness",
+    "tags": ["relocation", "flexibility", "open to move"],
+    "rank": 1,
+    "summary": "Yes, I'm open to relocation if the opportunity is right.",
+    "content": "Yes, I'm absolutely open to relocation. If the right opportunity comes along—one that offers strong growth, challenging projects, and a great team—I'm willing to move. I'm not tied to one location, and I see relocation as a chance to experience new environments and expand my professional network.",
+    "metadata": {
+      "type": "relocation",
+      "priority": "medium"
+    }
+  },
+  {
+    "id": "contact-001",
+    "category": "Contact",
+    "title": "Contact Information & Links",
+    "tags": ["contact", "linkedin", "github", "professional links"],
+    "rank": 1,
+    "summary": "You can find me on LinkedIn and GitHub for more details about my projects and professional background.",
+    "content": "You can connect with me on LinkedIn at https://www.linkedin.com/in/mechergui-mohamed-salah/ to see my full professional background, recommendations, and network. My GitHub is https://github.com/mohamed1312131, where you can explore my projects, including the freelance e-commerce platform I'm currently maintaining, the CareForElders RAG system, and other full-stack applications I've built. Feel free to reach out through either platform—I'm always open to discussing opportunities, collaborations, or technical topics.",
+    "metadata": {
+      "type": "contact",
+      "priority": "high",
+      "links": {
+        "linkedin": "https://www.linkedin.com/in/mechergui-mohamed-salah/",
+        "github": "https://github.com/mohamed1312131"
+      }
+    }
+  },
+  {
+    "id": "proj-005",
+    "category": "Project",
+    "title": "Custom E-Commerce Platform (Freelance - Ongoing)",
+    "tags": ["freelance", "e-commerce", "angular", "spring boot", "custom platform", "admin dashboard", "current project"],
+    "rank": 1,
+    "summary": "Currently maintaining a fully customizable e-commerce platform for a client (4 months ongoing). Admin can track, update, and change anything on the frontend dynamically.",
+    "content": "I've been working on a freelance e-commerce project for the past 4 months, building a fully customizable platform where the admin has complete control. The admin can track orders, update product catalogs, change frontend layouts, modify pricing, and adjust the client's store appearance—all dynamically without touching code. Built with Angular for the frontend and Spring Boot for the backend, the system includes inventory management, order processing, user authentication, and a comprehensive admin dashboard. I'm currently maintaining and iterating on this project based on client feedback, adding new features and improving performance. You can check my GitHub for more technical details and code samples.",
+    "technologies": ["Angular", "Spring Boot", "MongoDB", "REST API", "Admin Dashboard"],
+    "metadata": {
+      "type": "freelance_project",
+      "status": "ongoing",
+      "year": "2024-2025",
+      "priority": "high",
+      "duration": "4 months (ongoing)"
     }
   }
 ]

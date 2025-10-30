@@ -1,5 +1,6 @@
 package com.example.chatml.service;
 
+import com.example.chatml.model.AzureChatCompletion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -47,11 +48,10 @@ public class AzureChatClient {
         return message.get("content").toString();
     }
 
-    public String chatWithMessages(java.util.List<com.example.chatml.model.ChatMessage> messages) {
+    public AzureChatCompletion chatWithMessages(java.util.List<com.example.chatml.model.ChatMessage> messages) {
         String url = String.format("%s/openai/deployments/%s/chat/completions?api-version=%s",
                 baseUrl, chatDeployment, chatApiVersion);
 
-        // Convert DTOs to a plain List<Map<String,String>> for the API
         java.util.List<java.util.Map<String, String>> wireMessages = new java.util.ArrayList<>();
         for (var m : messages) {
             wireMessages.add(java.util.Map.of("role", m.getRole(), "content", m.getContent()));
@@ -72,8 +72,21 @@ public class AzureChatClient {
         if (response == null || response.get("choices") == null) {
             throw new RuntimeException("Azure chat model returned no response");
         }
+
+        // 1. Extract Content
         java.util.Map<String, Object> firstChoice = ((java.util.List<java.util.Map<String, Object>>) response.get("choices")).get(0);
         java.util.Map<String, Object> message = (java.util.Map<String, Object>) firstChoice.get("message");
-        return String.valueOf(message.get("content"));
+        String content = String.valueOf(message.get("content"));
+
+        // 2. Extract Token Usage
+        java.util.Map<String, Object> usage = (java.util.Map<String, Object>) response.get("usage");
+        int totalTokens = 0;
+        if (usage != null && usage.containsKey("total_tokens")) {
+            // Note: Azure API returns this as an Integer
+            totalTokens = (Integer) usage.get("total_tokens");
+        }
+
+        // 3. Return the composite object
+        return new AzureChatCompletion(content, totalTokens);
     }
 }
