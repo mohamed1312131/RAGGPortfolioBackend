@@ -66,27 +66,82 @@ public class RagChatService {
         System.out.println("Temporal query detected: " + isTemporalQuery);
 
         // 6. Determine category filter based on question content
-        // 6. Determine category filter based on question content
         Map<String, Object> filter = null;
         String lowerQuestion = question.toLowerCase();
 
-        // --- START OF FIX ---
-        // Prioritize "Project" if mentioned, as it's more specific.
-        if (lowerQuestion.contains("project")) {
+        // Check for specific company names (for deep-dive questions)
+        if (lowerQuestion.contains("the hive") || lowerQuestion.contains("hive")) {
+            filter = Map.of("company", "The Hive");
+            System.out.println("Filter: The Hive company");
+        }
+        else if (lowerQuestion.contains("mondiale") || lowerQuestion.contains("etudes")) {
+            filter = Map.of("company", "Mondiale des Etudes & Réalisations Industrielles");
+            System.out.println("Filter: Mondiale company");
+        }
+        else if (lowerQuestion.contains("new technologies") || lowerQuestion.contains("pfe")) {
+            filter = Map.of("company", "New Technologies");
+            System.out.println("Filter: New Technologies company");
+        }
+        else if (lowerQuestion.contains("bank of tunis") || lowerQuestion.contains("bank")) {
+            filter = Map.of("company", "Bank of Tunis");
+            System.out.println("Filter: Bank of Tunis company");
+        }
+        // Check for specific project names
+        else if (lowerQuestion.contains("careforelders") || lowerQuestion.contains("care for elders") || 
+                 lowerQuestion.contains("elderly care")) {
+            filter = Map.of("title", "CareForElders – AI-Powered Elderly Care Platform");
+            System.out.println("Filter: CareForElders project");
+        }
+        else if (lowerQuestion.contains("fullcare") || lowerQuestion.contains("blockchain") ||
+                 lowerQuestion.contains("hedera")) {
+            filter = Map.of("title", "FullCare_App – Blockchain Healthcare Document Management");
+            System.out.println("Filter: FullCare_App project");
+        }
+        else if (lowerQuestion.contains("ecommerce") || lowerQuestion.contains("multipurpose")) {
+            filter = Map.of("title", "MultiPurpose_Ecommerce – Customizable B2B/B2C Platform");
+            System.out.println("Filter: MultiPurpose_Ecommerce project");
+        }
+        // Prioritize "Project" if mentioned generally
+        else if (lowerQuestion.contains("project")) {
             filter = Map.of("category", "Project");
             System.out.println("Filter: Project only");
         }
-        // If "project" isn't mentioned, *then* check for "experience".
+        // If "project" isn't mentioned, check for "experience"
         else if (lowerQuestion.contains("experience") || lowerQuestion.contains("work") ||
                 lowerQuestion.contains("job") || lowerQuestion.contains("professional")) {
             filter = Map.of("category", "Experience");
             System.out.println("Filter: Experience only");
         }
-        // Finally, check for "education".
+        // Check for "education"
         else if (lowerQuestion.contains("education") || lowerQuestion.contains("study") ||
                 lowerQuestion.contains("degree") || lowerQuestion.contains("university")) {
             filter = Map.of("category", "Education");
             System.out.println("Filter: Education only");
+        }
+        // Check for learning/challenge questions
+        else if (lowerQuestion.contains("learn") || lowerQuestion.contains("challenge") ||
+                 lowerQuestion.contains("difficult") || lowerQuestion.contains("overcome")) {
+            filter = Map.of("category", "Technical");
+            System.out.println("Filter: Technical/Learning experiences");
+        }
+        // Check for behavioral/STAR questions
+        else if (lowerQuestion.contains("tell me about a time") || lowerQuestion.contains("give me an example") ||
+                 lowerQuestion.contains("describe a situation") || lowerQuestion.contains("star")) {
+            filter = Map.of("category", "Behavioral");
+            System.out.println("Filter: Behavioral/STAR examples");
+        }
+        // Check for architecture/system design questions
+        else if (lowerQuestion.contains("architecture") || lowerQuestion.contains("system design") ||
+                 lowerQuestion.contains("scalability") || lowerQuestion.contains("design a system")) {
+            // Search in Technical category for architecture content
+            System.out.println("Architecture/Design query detected - searching Technical category");
+        }
+        // Check for DevOps/CI-CD questions
+        else if (lowerQuestion.contains("devops") || lowerQuestion.contains("ci/cd") ||
+                 lowerQuestion.contains("docker") || lowerQuestion.contains("kubernetes") ||
+                 lowerQuestion.contains("deployment")) {
+            // Search in Technical category for DevOps content
+            System.out.println("DevOps/Deployment query detected - searching Technical category");
         }
 
         // 7. Retrieve documents with metadata
@@ -95,6 +150,12 @@ public class RagChatService {
                 lowerQuestion.contains("what are")) {
             retrievalCount = 10;
             System.out.println("Comprehensive query detected - retrieving more results");
+        }
+        // Increase retrieval for experience queries to get all job entries
+        if (lowerQuestion.contains("experience") || lowerQuestion.contains("work history") ||
+                lowerQuestion.contains("jobs") || lowerQuestion.contains("career")) {
+            retrievalCount = 8;
+            System.out.println("Experience query detected - retrieving more results");
         }
 
         List<Map<String, Object>> results = chromaClient.querySimilar(queryEmbedding, retrievalCount, filter);
@@ -120,6 +181,12 @@ public class RagChatService {
         int limit = (lowerQuestion.contains("all") || lowerQuestion.contains("list") ||
                 lowerQuestion.contains("what are")) ?
                 Math.min(8, results.size()) : Math.min(3, results.size());
+
+        // Increase context limit for experience queries to include all jobs
+        if (lowerQuestion.contains("experience") || lowerQuestion.contains("work history") ||
+                lowerQuestion.contains("jobs") || lowerQuestion.contains("career")) {
+            limit = Math.min(6, results.size());
+        }
 
         System.out.println("Including " + limit + " results in context");
 
@@ -167,6 +234,47 @@ public class RagChatService {
         - "last" / "recent" / "current" → Use the most recent entry by year/date from CONTEXT
         - "all" / "list" → Include ALL relevant entries from CONTEXT, ordered by recency
         - If asked "what are you doing now" or "current work" → prioritize entries with rank 0 or is_current=true
+        
+        EXPERIENCE QUERIES:
+        - When asked about "experience" or "work history", mention ALL job positions from the CONTEXT
+        - List them chronologically (most recent first): The Hive, Mondiale des Etudes, New Technologies, Bank of Tunis
+        - Include company names, positions, and key achievements for each
+        - Don't just give a general overview—mention specific roles
+        
+        DEEP-DIVE QUESTIONS:
+        - If asked about a SPECIFIC company (e.g., "Tell me about The Hive"), provide detailed info: responsibilities, achievements, technologies, challenges
+        - If asked about a SPECIFIC project (e.g., "Tell me about CareForElders"), explain: what it does, technologies used, your role, challenges faced, what you learned
+        - If asked "What did you learn from X?", focus on technical skills gained, challenges overcome, and growth
+        - If asked about a SPECIFIC technology (e.g., "How did you use Kafka?"), explain the use case, implementation details, and problems solved
+        
+        RESPONSE FORMATTING (CRITICAL - ALWAYS FOLLOW FOR COMPANY/PROJECT QUESTIONS):
+        - When asked about a SPECIFIC company or project, you MUST include a "Technologies & Tools Used:" section
+        - Format: Overview paragraph, then blank line, then "Technologies & Tools Used:" with bullet points
+        - MANDATORY structure:
+          "At [Company], I [role description]...
+          
+          Technologies & Tools Used:
+          • [Tool 1] - [Brief description]
+          • [Tool 2] - [Brief description]
+          • [Tool 3] - [Brief description]"
+        - This is REQUIRED for: The Hive, Mondiale, New Technologies, CareForElders, FullCare_App, MultiPurpose_Ecommerce, AI Portfolio Chatbot
+        - Do NOT use this format for: career goals, strengths, "why hire you", learning questions
+        
+        SKILL QUESTIONS:
+        - When asked about skills in detail, provide CONCRETE EXAMPLES from your experience
+        - Don't just list technologies—explain HOW and WHERE you used them
+        - Connect skills to real projects and measurable outcomes
+        
+        BEHAVIORAL/STAR QUESTIONS:
+        - If asked "Tell me about a time..." or "Give me an example...", use the STAR format from CONTEXT
+        - Structure: Situation → Task → Action → Result
+        - Be specific with metrics and outcomes (e.g., "reduced by 30%")
+        - Show problem-solving skills and impact
+        
+        ARCHITECTURE/SYSTEM DESIGN:
+        - When asked about architecture or system design, explain concepts with examples from your projects
+        - Discuss trade-offs, scalability considerations, and real-world applications
+        - Reference specific technologies and patterns you've used
         
         PERSONALITY:
         - Be enthusiastic when discussing technical challenges or learning

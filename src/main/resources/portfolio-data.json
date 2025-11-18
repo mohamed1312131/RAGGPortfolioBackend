@@ -494,5 +494,119 @@
       "priority": "high",
       "duration": "4 months (ongoing)"
     }
+  },
+  {
+    "id": "arch-001",
+    "category": "Technical",
+    "title": "Backend Architecture & System Design",
+    "tags": ["architecture", "system design", "scalability", "microservices", "distributed systems"],
+    "rank": 0,
+    "summary": "I understand microservices, event-driven systems, domain-driven design, and distributed architecture patterns.",
+    "content": "I have a solid understanding of backend architecture, including monolith vs microservices trade-offs, API gateway patterns, service discovery, data consistency, and distributed tracing. I build REST APIs with proper separation of concerns, clean domain-driven modules, and scalable persistence strategies. I have worked with event-driven architecture using Kafka and understand concepts like eventual consistency, CQRS, and idempotent message consumption. I'm comfortable talking about database sharding, caching layers (Redis), load balancing, and horizontal scaling using Kubernetes. I can design systems that handle high traffic and large amounts of data while staying maintainable.",
+    "metadata": {
+      "type": "technical_knowledge",
+      "priority": "high"
+    }
+  },
+  {
+    "id": "devops-001",
+    "category": "Technical",
+    "title": "CI/CD, Containers & Deployment",
+    "tags": ["devops", "docker", "kubernetes", "ci/cd", "automation"],
+    "rank": 0,
+    "summary": "I can containerize apps, automate deployments and manage CI/CD pipelines using GitLab, GitHub Actions, and Docker.",
+    "content": "I've built CI/CD pipelines for Spring Boot and Angular applications using GitHub Actions and GitLab CI/CD. I write Dockerfiles and docker-compose configurations to isolate services. I understand Kubernetes concepts including deployments, services, config maps, secrets, and horizontal pod autoscaling. I've also worked with Azure App Services and Azure OpenAI deployments. For testing & QA, I integrate unit tests, SonarQube analysis, and automated API tests using Postman CLI or REST Assured. I'm comfortable managing build pipelines from code to deployment.",
+    "metadata": {
+      "type": "technical_knowledge",
+      "priority": "high"
+    }
+  },
+  {
+    "id": "ai-001",
+    "category": "Technical",
+    "title": "LLM, RAG & Vector Search Experience",
+    "tags": ["AI", "RAG", "LLM", "vector search", "ChromaDB", "embeddings"],
+    "rank": 0,
+    "summary": "I built a full RAG pipeline using embeddings, ChromaDB, and Azure OpenAI to answer domain-specific queries.",
+    "content": "I designed and implemented a Retrieval-Augmented Generation system for the CareForElders project. The pipeline includes Azure embedding generation, semantic search via ChromaDB, metadata filtering for contextual ranking, and a custom system prompt that dynamically injects relevant document fragments into the LLM request. I handle token limits, history-based embeddings, temporal query detection, and dynamic filtering based on metadata attributes. I understand vector databases, cosine similarity, chunking, embedding models, prompt engineering, and the limitations of LLMs including hallucination risks and grounding strategies.",
+    "metadata": {
+      "type": "technical_knowledge",
+      "priority": "high"
+    }
+  },
+  {
+    "id": "behavioral-STAR-001",
+    "category": "Behavioral",
+    "title": "STAR Example – Debugging a Production Incident",
+    "tags": ["STAR", "behavioral", "debugging", "problem solving"],
+    "rank": 0,
+    "summary": "Critical incident in global app for luxury brands — solved using systematic debugging through Kafka & Kibana.",
+    "content": "SITUATION: A critical production feature broke in a luxury brand application used in multiple countries. TASK: I was responsible for investigating the root cause as L2 support. ACTION: I traced the entire data pipeline using Postman, Kibana logs, and Kafka consumer checks. Found a misconfigured payload and created an automated script to detect it. RESULT: Restored system functionality within SLA, documented root cause, and prevented recurrence. Reduced resolution time for similar tickets by ~30%.",
+    "metadata": {
+      "type": "behavioral_example",
+      "priority": "high"
+    }
+  },
+  {
+    "id": "proj-006",
+    "category": "Project",
+    "title": "AI Portfolio Chatbot – RAG-Powered Interview Assistant",
+    "tags": ["RAG", "AI", "portfolio", "spring boot", "nextjs", "azure", "chromadb", "current project"],
+    "rank": 0,
+    "summary": "Built a full-stack AI-powered portfolio chatbot using RAG architecture to answer recruiter questions intelligently based on my actual experience and projects.",
+    "content": "I designed and built this AI portfolio chatbot from scratch as a modern way to showcase my skills to recruiters. The system uses Retrieval-Augmented Generation (RAG) to answer questions about my experience, projects, and skills based on real portfolio data stored in a vector database. When a recruiter asks a question, the backend generates embeddings, searches ChromaDB for relevant context, and uses Azure OpenAI to generate personalized, accurate responses in my voice. The backend is built with Spring Boot and includes PostgreSQL for analytics tracking (daily users, question categories, conversation metrics). The frontend is built with Next.js 15, React, TypeScript, and TailwindCSS, featuring a modern chat interface with real-time streaming responses, an admin dashboard with charts and analytics, and responsive design. Both frontend and backend are deployed on Azure App Services with Docker containerization. This project demonstrates my full-stack capabilities, AI/RAG implementation skills, cloud deployment experience, and ability to build production-ready applications end-to-end.",
+    "achievements": [
+      "Built complete RAG pipeline with embeddings, vector search, and context injection",
+      "Implemented real-time chat with streaming responses and conversation history",
+      "Created admin analytics dashboard with PostgreSQL tracking",
+      "Deployed full-stack application to Azure with Docker containers",
+      "Designed smart query detection for company, project, and behavioral questions"
+    ],
+    "technologies": ["Spring Boot", "Next.js 15", "React", "TypeScript", "Azure OpenAI", "ChromaDB", "PostgreSQL", "Docker", "Azure App Services", "TailwindCSS", "REST API", "Vector Embeddings", "RAG Architecture"],
+    "technical_details": {
+      "backend": {
+        "framework": "Spring Boot 3.3.5",
+        "language": "Java 17",
+        "database": "PostgreSQL (analytics), ChromaDB (vector store)",
+        "ai_integration": "Azure OpenAI (embeddings + chat completion)",
+        "architecture": "RAG pipeline with semantic search and metadata filtering",
+        "features": [
+          "Conversation history tracking with token limits",
+          "Smart category detection (Experience, Project, Behavioral, Technical)",
+          "Temporal query handling (recent, current, last)",
+          "Company and project-specific filtering",
+          "STAR format for behavioral questions",
+          "Analytics API for admin dashboard"
+        ]
+      },
+      "frontend": {
+        "framework": "Next.js 15 with App Router",
+        "language": "TypeScript",
+        "styling": "TailwindCSS",
+        "ui_components": "Radix UI, Lucide Icons",
+        "features": [
+          "Real-time streaming chat interface",
+          "Admin dashboard with daily users chart",
+          "Question category analytics",
+          "Conversation metrics tracking",
+          "Responsive design for mobile and desktop"
+        ]
+      },
+      "deployment": {
+        "platform": "Azure App Services",
+        "containerization": "Docker",
+        "backend_url": "https://raagchatbot.azurewebsites.net",
+        "frontend_url": "https://mohamed-raag-front-linux.azurewebsites.net",
+        "ci_cd": "Manual deployment with Azure CLI"
+      }
+    },
+    "metadata": {
+      "type": "personal_project",
+      "status": "deployed",
+      "year": "2024-2025",
+      "priority": "critical",
+      "github": "Available on request",
+      "live_demo": "https://mohamed-raag-front-linux.azurewebsites.net"
+    }
   }
 ]
